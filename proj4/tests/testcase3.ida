@@ -1,0 +1,11 @@
+div $a0 $t0 0
+or  $a1 $0 0x1342
+div $a1 $a0 -2
+
+stu $a2 $a1 0x234
+
+sl  $a4 $a1 0
+sl  $a4 $a1 2000
+sr  $t19 $a4 113
+stu $0 $0 $0
+

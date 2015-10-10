@@ -1,0 +1,202 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <title>CS61C Fall 2014 Lab 12</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <style type="text/css"> img{border:1px dotted black;} </style>
+  </head>
+  <body id="frame">
+    <div class="header">
+      <h1>CS61C Fall 2014 Lab 12 - Project 4 Prelude</h1>
+      <!-- <big>TA: Kevin Liston</big> -->
+    </div>
+
+    <div class="content">
+
+      <h1>Advanced Logisim Features</h1>
+      <p> Here are two more logisim features you will find useful. After reading about tunnels and extenders, begin the lab exercises below.
+      </p> 
+           
+      <div class="section">
+        <h2>Tunnels</h2>
+        <p>A <a href="http://www.cburch.com/logisim/docs/2.6.0/en/libs/base/tunnel.html">tunnel</a> allows you draw an "invisible wire" to bind two
+          points together. Tunnels are grouped by case-sensitive
+          labels give to a wire.  They are used to connect wires
+          like so:</p>
+        <img src="tunnels1.png">
+        <p>Which has an effect such as the following:</p>
+        <img src="tunnels2.png">
+        <p>Some care should be taken as to which wires are connected with tunnels to 
+          which other wires, such as in this case:</p>
+        <img src="tunnels3.png">
+        <p>Which in turn has the following effect:</p>
+        <img src="tunnels4.png">
+
+	<p>We <em>strongly</em> recommend you use tunnels with Logisim, because they make your circuits much cleaner looking, and therefore easier to debug.</p>
+      </div>
+
+      
+      <div class="section">
+        <h2>Extenders</h2>
+        <p>When changing the width of a wire, you should use a <a href="http://www.cburch.com/logisim/docs/2.6.0/en/libs/base/extender.html">bit extender</a> for clarity. 
+          For example, consider the following implementation of extending an 8-bit wire 
+          into a 16-bit wire:</p>
+        <img src="extend1.png">
+        <p>Whereas the following is much simpler, easier to read, and less error-prone:</p>
+        <img src="extend2.png">
+        <p>Additionally consider the case of throwing out bits. In this example, an 8-bit 
+          wire is being converted into a 16-bit wire by throwing out the other bits:</p>
+        <img src="extend3.png">
+        <p>Despite the implications of its name, a bit extender can also do this same 
+          operation:</p>
+        <img src="extend4.png">
+      </div>
+
+      <hr>
+      <h1>Lab Exercises</h1>
+
+      <p>Copy the starter lab files as usual, from the directory: <tt>~cs61c/labs/12</tt></p>     
+      
+      <h2>Exercise 1: Logisim ALU</h2>
+      
+      <p>In this exercise, you will first implement a 32 bit ALU in
+      logisim.
+
+	As a reminder, recall that ALU stands for <em>Arithmetic Logic Unit</em>. An
+	ALU is a fundamental building block of a CPU (central
+	processing unit) and it performs integer arithmetic and
+	logical (bitwise) operations. The function that the ALU
+	performs (e.g. add, xor) is determined by the control of our
+	datapath, which is determined by the instruction the processor
+	is executing. The ALU is highlighted in a simplified datapath diagram below:      </p>
+
+	<img src="alu.png" style="height:150px;width:auto">
+	
+      <p> This lab assignment is similar to the CPU design project (it
+        is essentially a slightly simpler version of Project 4's ALU).
+        Hopefully by getting a headstart here in lab, Project 4 will
+        go a bit more smoothly!</p>
+        
+      <div class="section" id="functions">
+        <p>The 8 functions that you will implement are: shift left logical, shift right 
+        logical, shift right arithmetic, rotate left, rotate right, and, or, and xor. The
+        ALU will perform a desired function on 2 32-bit inputs and output the result. The 
+        selected function will be determined by the value of the control signal, as 
+        listed below.</p>
+        
+        <p>Here's what occurs for each operation:</p>
+        
+        <table border="1">
+          <thead valign="bottom">
+            <tr>
+              <th>Control</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+
+          <tbody valign="top">
+            <tr>
+              <td>000</td>
+              <td>Shift Left Logical</td>
+            </tr>
+            <tr>
+              <td>001</td>
+              <td>Shift Right Logical</td>
+            </tr>
+            <tr>
+              <td>010</td>
+              <td>Shift Right Arithmetic</td>
+            </tr>
+            <tr>
+              <td>011</td>
+              <td>Rotate Left</td>
+            </tr>
+            <tr>
+              <td>100</td>
+              <td>Rotate Right</td>
+            </tr>
+            <tr>
+              <td>101</td>
+              <td>And</td>
+            </tr>
+            <tr>
+              <td>110</td>
+              <td>Inclusive Or</td>
+            </tr>
+            <tr>
+              <td>111</td>
+              <td>Exclusive Or</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="section">
+        <h4>Checkoff</h4>
+        <ul>
+          <li>Set two inputs to your ALU. Toggle the control bits to
+          change the function being performed on the output and verify
+          with your TA that the output is correct.</li>
+        </ul>
+      </div>
+      
+      
+      <div class="section">
+        <h2>Exercise 2: Register File</h2>
+        <p>
+	  Recall that a register file is an array of registers in a
+	CPU. We use the register file to read or write from chosen
+	  registers. The regfile is highlighted in a simplified datapath diagram below:</p>
+	<img src="regfile.png" style="height:150px;width:auto">
+        <p>
+	  This exercise will help you understand how a register
+	file works, and give you more practice with Logisim. For your project 4 processor,
+	  you will be given a register file circuit to use.</p>
+
+	<p>Your regfile will contain 4 registers. Just like in our MIPS processor, we require register 0 to always equal 0.</p>
+
+	<p> The inputs of your circuit are:
+	  <ul>
+	    <li><tt>RS</tt> - the "source register" to read from</li>
+	    <li><tt>RT</tt> - the "target register" to read from</li>
+	    <li><tt>RD</tt> - the "destination register" to write to</li>
+	    <li><tt>RD_WRITE_VALUE</tt> - the value to write into register <tt>RD</tt></li>
+	    <li><tt>RD_WRITE_ENABLE</tt> - <tt>RD</tt> is only written with the contents of <tt>RD_WRITE_VALUE</tt> if this input bit is high</li>
+	    <li><tt>CLK</tt> - For our regfile, reads are asynchronous where as writes are synchronous.</li>
+	  </ul>
+	</p>
+	
+	<p>The outputs of your regfile should be:
+	  <ul>
+	    <li><tt>RS_READ_VALUE</tt> - the value read from register <tt>RS</tt></li>
+	    <li><tt>RT_READ_VALUE</tt> - the value read from register <tt>RT</tt></li>
+	    <li><tt>REG_{0,1,2,3}_VALUE</tt> - These are the current values for
+	    all of your registers. A normal regfile wouldn't include
+	    this but it helpful for debuging and also to verify the
+	    correctness of your circuit.</li>
+	  </ul>
+	</p>
+
+        <div class="section">
+	  <h4>Hints:</h4>
+	  <ul>
+	    <li>Be sure to understand the purpose of all of the pins found on a <a href="http://www.cburch.com/logisim/docs/2.6.0/en/libs/mem/register.html">register</a>.</li>
+	    <li>When constructing your regfile, you may find a <a href="http://www.cburch.com/logisim/docs/2.6.0/en/libs/plexers/demux.html">demux</a> to be helpful.</li>
+	  </ul>
+	</div>
+	
+      <div class="section">
+        <h4>Checkoff</h4>
+        <ul>
+          <li>First set the contents of some registers manually, and show your TA that reading from <tt>RS</tt> and <tt>RT</tt> works.</li>
+	  <li>Now set <tt>RD=11</tt> and demonstrate writing a value into register 3. Ensure the value on the <tt>REG_3_VALUE</tt> only changes on the rising edge of the clock, and that no other registers change values.</li>
+	  <li>Set <tt>RD=00</tt> and <tt>RD_WRITE_ENABLE=1</tt> and attempt to write a value into register 0. Its value should not change.</li>
+        </ul>
+      </div>
+      
+      
+      
+    </div>
+  </body>
+</html>
+

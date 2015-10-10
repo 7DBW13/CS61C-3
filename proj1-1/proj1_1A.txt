@@ -1,0 +1,7 @@
+Fill in your answers here.
+
+1. Seems that the algorithm does identify the sticky note, but the border is not quite clear. The reason is that the color of the edge of the note is very similar to the color of sky, and the color of note is similar to the color of the building on the left.
+
+2. It works better because the distinction between the color of the note (the foreground object) and the color of the background object is obvious.
+
+3. As the size of feature grows, the letters "CAL" becomes narrower and the border of the output image contains less information. The letters becomes narrower because the algorithm does not generate information for the borders in the output image. The larger feature means that the information are more averaged (like a low-pass filter), so the edge becomes less defined. Also, the larger feature size means that it may contain more noise.

@@ -1,0 +1,4 @@
+Exercise 1 
+  * __m128i _mm_div_epi32(__m128i a, __m128i b)
+  * __m128i _mm_max_epi8(__m128i a, __m128i b)
+  * __m128i _mm_srai_epi16(__m128i a, int imm)

@@ -1,0 +1,120 @@
+/*
+ * PROJ1-1: YOUR TASK A CODE HERE
+ *
+ * Feel free to define additional helper functions.
+ */
+
+#include "calc_depth.h"
+#include "utils.h"
+#include <math.h>
+#include <limits.h>
+#include <stdio.h>
+
+/* Implements the normalized displacement function */
+unsigned char normalized_displacement(int dx, int dy,
+        int maximum_displacement) {
+
+    double squared_displacement = dx * dx + dy * dy;
+    double normalized_displacement = round(255 * sqrt(squared_displacement) / sqrt(2 * maximum_displacement * maximum_displacement));
+    return (unsigned char) normalized_displacement;
+
+}
+
+
+// helper function definitions here.
+int get_row(int index, int width);
+int get_col(int index, int height);
+int in_image(int row, int col, int width, int height);
+int idx(int x, int y, int width);
+int abs(int x);
+
+// abbreviate long names.
+#define maxd maximum_displacement
+
+void calc_depth(unsigned char *depth_map, unsigned char *left,
+        unsigned char *right, int image_width, int image_height,
+        int feature_width, int feature_height, int maximum_displacement) {
+
+    /* YOUR CODE HERE */
+    int i; // the index in the left image.
+    for (i = 0; i < image_width * image_height; i++) {
+      depth_map[i] = 0;
+    }
+    if (!maxd) {
+      return;
+    }
+
+    int row;
+    int col;
+    int j, k; // j, k are row/col position of the center of current search.
+    int curr; // the current displacement value recoreded.
+    int p, q; // relative location of pixel being compared.
+    int highx = 0, highy = 0;
+    unsigned int sum;
+    unsigned int currhigh;
+    int hp, hq;
+    
+    for (i = 0; i < image_width * image_height; i++) {
+      row = get_row(i, image_width);
+      col = get_col(i, image_height);
+      if (row - feature_height < 0 ||
+          row + feature_height > image_height || 
+          col - feature_width < 0 || col + feature_width > image_width) {
+        depth_map[i] = 0;
+      } else {
+        currhigh = 0xFFFFFFFF;
+        sum = 0;
+        hp = 0;
+        hq = 0;
+        
+        for (j = row - maxd; j <= row + maxd; j++) {
+          for (k = col - maxd; k <= col + maxd; k++) {
+            if (j - feature_height > 0 && j + feature_height < image_height &&
+                k - feature_width > 0 && j + feature_height > image_height) {
+              for (p = -feature_height; p <= feature_height; p++) {
+                for (q = -feature_width; q <= feature_width; q++) {
+                  sum += pow(left[i] - right[idx(j+p, k+q, image_width)], 2);
+                }
+              }
+              if (sum < currhigh) {
+                currhigh = sum;
+                hp = j+p;
+                hq = k+q;
+              }
+            }
+          }
+        }
+        depth_map[i] = normalized_displacement(abs(hq-col), abs(hp-row), maximum_displacement);
+      }
+    }
+}
+
+
+
+/* get the row number of a pixel with given index and width. */
+int get_row(int index, int width) {
+  return index / width;
+}
+
+/* get the column number of a pixel with given index and height. */
+int get_col(int index, int height) {
+  return index / height;
+}
+
+/* return 1 iff a pixel is in an image. */
+int in_image(int row, int col, int width, int height) {
+  return row >= 0 && col >= 0 && row < height && col < width;
+}
+
+/* return the index of a given point (x, y). */
+int idx(int x, int y, int width) {
+  return y * width + x;
+}
+
+/* return the absolute value of x */
+int abs(int x) {
+  if (x > 0) {
+    return x;
+  }
+  return -x;
+}

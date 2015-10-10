@@ -1,0 +1,12 @@
+or $jc $0 0x20
+ask:
+sub $sp $sp 10
+sh $a0 $0($sp)
+sh $ra 1($sp)
+sh $fp 6($sp)
+sub $jc $jc 1
+jgt @ask
+
+add $sp $sp 100
+
+

@@ -1,0 +1,33 @@
+1. medium  6   1.6 minutes size: 18.5MiB
+   medium 12   1.6 minutes size: 18.5MiB
+   large  12   58  minutes size: 2916.3MiB
+
+2. medium size: 18.5 MiB
+   large size: 2916.3 MiB
+   6 instances: 0.19 MiB/s
+   12 instances: 0.19 MiB/s for medium, 0.84 MiB/s for large
+
+3. There was no speedup for 12 instances relative to 6 instances for 5x2 case.
+   For a task with small amount of data Spark does not parallelize very well.
+   This is a strong scaling because the total problem size is fixed.
+
+4. (Here I round up hours)
+      6 instances:
+      - Total cost for medium: $4.08 * 1
+      - Data size: 18.5 / 1024 GiB
+      - Price per GiB: $225.84
+
+      12 instances:
+      - Total cost for medium: $8.16 * 1
+      - Data size: 18.5 / 1024 GiB
+      - Price per GiB: $451.67
+      - Total cost for large: $8.16 * 1
+      - Data size: 2916.3 / 1024 GiB
+      - Price per GiB: $2.87
+
+5. I did not remember the exact usage of machines, so I would like to provide an upper bound cost approximation.
+    Approximate usage for 6 slaves: 1 hour. Cost: $4.08
+    Approximate usage for 12 slaves: 12 hours. Cost: $97.92
+    The total cost is $102.
+
+    I wasted a lot money by a "potentially" misleading error message (Worker has already been shutdown) and re-ran large for several times. :(

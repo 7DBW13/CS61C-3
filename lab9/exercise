@@ -1,0 +1,2 @@
+the reduction one works better for large # of threads.
+why? more parallelized

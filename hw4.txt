@@ -1,0 +1,46 @@
+CS 61C Homework 4
+Name:  Hansong Zhang
+Login: cs61c-ank
+
+
+P1- Waveform Diagrams
+1) 5
+2) 3
+3) 5 65 125
+4) 65 125
+
+
+
+P2 - Clock Frequency
+1) It does not work properly because 1ns after the rising edge the value of Yi adder get changed, and the register hold time is 2ns. The value changes between the register setup time and hold time.
+2) clk-to-q: 3ns; adder 1ns + 1ns; register setup time 2ns. Total: 7ns. Maximum clock frequency: 142 MHz
+3) First add up Xi and Yi, then add up the previous result and Si-1 so we get Si. In this diagram, total delay includes clk-to-q: 3ns, adder propagation: 1ns, register setup time 2ns. Total: 6ns.
+
+
+
+P3 - Simple FSM and Truth Tables
+
+CurState    | Input | NextState | Output
+Seen0       | 0     | Seen0     | 0
+Seen0       | 1     | Seen1     | 0
+Seen1       | 0     | Seen0     | 0
+Seen1       | 1     | Seen11    | 1
+Seen11      | 0     | Seen0     | 1
+Seen11      | 1     | Seen11    | 1
+
+
+
+
+P4 - Truth Tables, Boolean Algebra, FSMs, Logic Circuits
+1)
+
+Out = Curr_0 * (~ Curr_1) * (~ Input)
+
+Next1 = Input * (~ Curr_1)
+
+Next0 = ~ Input
+
+2)
+
+(state == 0x1) & ~ x
+(input & ~ (state >> 1)) << 1 | ~ input
